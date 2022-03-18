@@ -1,10 +1,13 @@
 const dotenv = require('dotenv');
 const express = require('express');
 
+const connectToDatabase = require('./backend/database/connect');
 const errorHandler = require('./backend/middleware/errorHandler');
 const userRouter = require('./backend/routers/userRouter');
 
 dotenv.config();
+
+connectToDatabase();
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 5000;
