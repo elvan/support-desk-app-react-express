@@ -78,8 +78,15 @@ exports.loginUser = asyncHandler(async (req, res) => {
 });
 
 exports.currentUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id).select('-password');
+
   res.json({
     message: 'Current user retrieved successfully',
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    },
   });
 });
 
