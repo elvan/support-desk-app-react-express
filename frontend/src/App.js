@@ -5,9 +5,10 @@ import Header from './components/Header';
 import PrivateRoute from './components/PrivateRoute';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import NewTicket from './pages/NewTicket';
 import Register from './pages/Register';
-import Tickets from './pages/Tickets';
+import TicketAdd from './pages/TicketAdd';
+import TicketDashboard from './pages/TicketDashboard';
+import TicketDetail from './pages/TicketDetail';
 
 const App = () => {
   return (
@@ -20,10 +21,13 @@ const App = () => {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/tickets' element={<PrivateRoute />}>
-              <Route path='/tickets' element={<Tickets />} />
+              <Route path='/tickets' element={<TicketDashboard />} />
+            </Route>
+            <Route path='/tickets' element={<PrivateRoute />}>
+              <Route path='/tickets/:ticketId' element={<TicketDetail />} />
             </Route>
             <Route path='/new-ticket' element={<PrivateRoute />}>
-              <Route path='/new-ticket' element={<NewTicket />} />
+              <Route path='/new-ticket' element={<TicketAdd />} />
             </Route>
           </Routes>
         </div>

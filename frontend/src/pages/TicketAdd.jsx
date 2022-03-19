@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import BackButton from '../components/BackButton';
 import { createTicket, reset } from '../features/tickets/ticketSlice';
 
-const NewTicket = () => {
+const TicketAdd = () => {
   // @ts-ignore
   const { user } = useSelector((state) => state.authState);
 
@@ -121,4 +121,4 @@ const NewTicket = () => {
   );
 };
 
-export default NewTicket;
+export default TicketAdd;

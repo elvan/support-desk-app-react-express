@@ -14,6 +14,18 @@ const list = async (token) => {
   return response.data;
 };
 
+const get = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(API_URL + `/${id}`, config);
+
+  return response.data;
+};
+
 const create = async (ticketData, token) => {
   const config = {
     headers: {
@@ -28,6 +40,7 @@ const create = async (ticketData, token) => {
 
 const ticketService = {
   list,
+  get,
   create,
 };
 

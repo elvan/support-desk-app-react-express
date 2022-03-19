@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
 import TicketItem from '../components/TicketItem';
 import { listTickets, reset } from '../features/tickets/ticketSlice';
 
-const Tickets = () => {
+const TicketDashboard = () => {
   const { tickets, isLoading, isSuccess } = useSelector(
     // @ts-ignore
     (state) => state.ticketState
@@ -33,7 +33,7 @@ const Tickets = () => {
     <>
       <BackButton url='/' />
 
-      <h1>Tickets</h1>
+      <h1>TicketDashboard</h1>
 
       <div className='tickets'>
         <div className='ticket-headings'>
@@ -51,4 +51,4 @@ const Tickets = () => {
   );
 };
 
-export default Tickets;
+export default TicketDashboard;
