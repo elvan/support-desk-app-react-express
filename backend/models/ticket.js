@@ -12,6 +12,10 @@ const ticketSchema = new mongoose.Schema(
       required: [true, 'Please add a product'],
       enum: ['Books', 'Movies', 'Music', 'Games', 'Electronics', 'Computers'],
     },
+    title: {
+      type: String,
+      required: [true, 'Please add a title'],
+    },
     description: {
       type: String,
       required: [true, 'Please add a description'],
@@ -19,8 +23,8 @@ const ticketSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: ['Open', 'In Progress', 'Resolved', 'Closed'],
-      default: 'Open',
+      enum: ['new', 'open', 'closed'],
+      default: 'new',
     },
   },
   {

@@ -64,15 +64,16 @@ exports.createTicket = asyncHandler(async (req, res) => {
     throw new Error('Unauthorized');
   }
 
-  const { product, description } = req.body;
+  const { product, title, description } = req.body;
 
-  if (!product || !description) {
+  if (!product || !title || !description) {
     res.status(400);
     throw new Error('Missing required fields');
   }
 
   const ticketData = {
     product,
+    title,
     description,
     user: user._id,
   };
@@ -111,9 +112,9 @@ exports.updateTicket = asyncHandler(async (req, res) => {
     throw new Error('You are not authorized to update this ticket');
   }
 
-  const { product, description } = req.body;
+  const { product, title, description } = req.body;
 
-  if (!product || !description) {
+  if (!product || !title || !description) {
     res.status(400);
     throw new Error('Missing required fields');
   }
@@ -122,6 +123,7 @@ exports.updateTicket = asyncHandler(async (req, res) => {
     req.params.id,
     {
       product,
+      title,
       description,
     },
     {

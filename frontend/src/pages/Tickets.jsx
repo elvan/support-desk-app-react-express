@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
+import TicketItem from '../components/TicketItem';
 import { listTickets, reset } from '../features/tickets/ticketSlice';
 
-const TicketDashboard = () => {
-  const { tickets, isLoading, isSuccess, isError } = useSelector(
+const Tickets = () => {
+  const { tickets, isLoading, isSuccess } = useSelector(
     // @ts-ignore
     (state) => state.ticketState
   );
@@ -22,8 +23,6 @@ const TicketDashboard = () => {
 
   useEffect(() => {
     dispatch(listTickets());
-
-    return () => {};
   }, [dispatch]);
 
   if (isLoading) {
@@ -33,9 +32,23 @@ const TicketDashboard = () => {
   return (
     <>
       <BackButton url='/' />
-      <section>TicketDashboard</section>
+
+      <h1>Tickets</h1>
+
+      <div className='tickets'>
+        <div className='ticket-headings'>
+          <div>Date</div>
+          <div>Title</div>
+          <div>Status</div>
+          <div></div>
+        </div>
+
+        {tickets.map((ticket) => (
+          <TicketItem key={ticket._id} ticket={ticket} />
+        ))}
+      </div>
     </>
   );
 };
 
-export default TicketDashboard;
+export default Tickets;

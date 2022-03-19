@@ -15,6 +15,7 @@ const NewTicket = () => {
   );
 
   const [product, setProduct] = useState('');
+  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
   const dispatch = useDispatch();
@@ -82,10 +83,23 @@ const NewTicket = () => {
           </div>
 
           <div className='form-group'>
+            <label htmlFor='title'>Title</label>
+            <input
+              id='title'
+              name='title'
+              type='text'
+              value={title}
+              disabled={isLoading}
+              onChange={(event) => setTitle(event.target.value)}
+            />
+          </div>
+
+          <div className='form-group'>
             <label htmlFor='description'>Description</label>
             <textarea
               id='description'
               name='description'
+              rows={3}
               value={description}
               disabled={isLoading}
               onChange={(event) => setDescription(event.target.value)}
