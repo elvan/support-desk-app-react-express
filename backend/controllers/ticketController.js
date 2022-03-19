@@ -5,7 +5,7 @@ const User = require('../models/user');
 
 exports.listTickets = asyncHandler(async (req, res) => {
   // @ts-ignore
-  const user = await User.findById(req.user._id);
+  const user = req.user;
 
   if (!user) {
     res.status(401);
@@ -30,7 +30,7 @@ exports.listTickets = asyncHandler(async (req, res) => {
 
 exports.getTicket = asyncHandler(async (req, res) => {
   // @ts-ignore
-  const user = await User.findById(req.user._id);
+  const user = req.user;
 
   if (!user) {
     res.status(401);
@@ -57,7 +57,7 @@ exports.getTicket = asyncHandler(async (req, res) => {
 
 exports.createTicket = asyncHandler(async (req, res) => {
   // @ts-ignore
-  const user = await User.findById(req.user._id);
+  const user = req.user;
 
   if (!user) {
     res.status(401);
@@ -92,7 +92,7 @@ exports.createTicket = asyncHandler(async (req, res) => {
 
 exports.updateTicket = asyncHandler(async (req, res) => {
   // @ts-ignore
-  const user = await User.findById(req.user._id);
+  const user = req.user;
 
   if (!user) {
     res.status(401);
@@ -142,7 +142,7 @@ exports.updateTicket = asyncHandler(async (req, res) => {
 
 exports.deleteTicket = asyncHandler(async (req, res) => {
   // @ts-ignore
-  const user = await User.findById(req.user._id);
+  const user = req.user;
 
   if (!user) {
     res.status(401);
