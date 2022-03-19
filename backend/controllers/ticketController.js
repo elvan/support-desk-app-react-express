@@ -28,6 +28,33 @@ exports.listTickets = asyncHandler(async (req, res) => {
   });
 });
 
+exports.getTicket = asyncHandler(async (req, res) => {
+  // @ts-ignore
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error('Unauthorized');
+  }
+
+  const ticket = await Ticket.findById(req.params.id);
+
+  if (!ticket) {
+    res.status(404);
+    throw new Error('Ticket not found');
+  }
+
+  if (ticket.user.toString() !== user._id.toString()) {
+    res.status(401);
+    throw new Error('You are not authorized to view this ticket');
+  }
+
+  res.json({
+    message: 'Ticket fetched successfully',
+    ticket: ticket,
+  });
+});
+
 exports.createTicket = asyncHandler(async (req, res) => {
   // @ts-ignore
   const user = await User.findById(req.user._id);
@@ -60,5 +87,88 @@ exports.createTicket = asyncHandler(async (req, res) => {
   res.json({
     message: 'Ticket created successfully',
     ticket: ticket,
+  });
+});
+
+exports.updateTicket = asyncHandler(async (req, res) => {
+  // @ts-ignore
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error('Unauthorized');
+  }
+
+  const ticket = await Ticket.findById(req.params.id);
+
+  if (!ticket) {
+    res.status(404);
+    throw new Error('Ticket not found');
+  }
+
+  if (ticket.user.toString() !== user._id.toString()) {
+    res.status(401);
+    throw new Error('You are not authorized to update this ticket');
+  }
+
+  const { product, description } = req.body;
+
+  if (!product || !description) {
+    res.status(400);
+    throw new Error('Missing required fields');
+  }
+
+  const updatedTicket = await Ticket.findByIdAndUpdate(
+    req.params.id,
+    {
+      product,
+      description,
+    },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedTicket) {
+    res.status(500);
+    throw new Error('Error updating ticket');
+  }
+
+  res.json({
+    message: 'Ticket updated successfully',
+    ticket: updatedTicket,
+  });
+});
+
+exports.deleteTicket = asyncHandler(async (req, res) => {
+  // @ts-ignore
+  const user = await User.findById(req.user._id);
+
+  if (!user) {
+    res.status(401);
+    throw new Error('Unauthorized');
+  }
+
+  const ticket = await Ticket.findById(req.params.id);
+
+  if (!ticket) {
+    res.status(404);
+    throw new Error('Ticket not found');
+  }
+
+  if (ticket.user.toString() !== user._id.toString()) {
+    res.status(401);
+    throw new Error('You are not authorized to delete this ticket');
+  }
+
+  const deletedTicket = await Ticket.findByIdAndDelete(req.params.id);
+
+  if (!deletedTicket) {
+    res.status(500);
+    throw new Error('Error deleting ticket');
+  }
+
+  res.json({
+    message: 'Ticket deleted successfully',
   });
 });
