@@ -10,7 +10,7 @@ const Header = () => {
 
   const { user } = useSelector(
     // @ts-ignore
-    (state) => state.auth
+    (state) => state.authState
   );
 
   const onLogout = () => {

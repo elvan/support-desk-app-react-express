@@ -21,7 +21,7 @@ const Register = () => {
 
   const { user, message, isLoading, isSuccess, isError } = useSelector(
     // @ts-ignore
-    (state) => state.auth
+    (state) => state.authState
   );
 
   const onChange = (event) => {

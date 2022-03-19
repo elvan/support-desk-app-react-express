@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import NewTicket from './pages/NewTicket';
 import Register from './pages/Register';
+import TicketDashboard from './pages/TicketDashboard';
 
 const App = () => {
   return (
@@ -18,6 +19,9 @@ const App = () => {
             <Route path='/' element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
+            <Route path='/tickets' element={<PrivateRoute />}>
+              <Route path='/tickets' element={<TicketDashboard />} />
+            </Route>
             <Route path='/new-ticket' element={<PrivateRoute />}>
               <Route path='/new-ticket' element={<NewTicket />} />
             </Route>

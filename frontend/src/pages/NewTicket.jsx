@@ -7,11 +7,11 @@ import { createTicket, reset } from '../features/tickets/ticketSlice';
 
 const NewTicket = () => {
   // @ts-ignore
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.authState);
 
   const { isLoading, isSuccess, isError, message } = useSelector(
     // @ts-ignore
-    (state) => state.ticket
+    (state) => state.ticketState
   );
 
   const [product, setProduct] = useState('');
