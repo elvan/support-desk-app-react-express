@@ -1,6 +1,6 @@
 {
   "name": "support-desk-app-express",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "description": "Support desk app",
   "main": "index.js",
   "scripts": {
