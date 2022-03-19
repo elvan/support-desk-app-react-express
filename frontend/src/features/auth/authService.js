@@ -10,12 +10,20 @@ const register = async (userData) => {
       'support-desk-app-user',
       JSON.stringify(response.data.user)
     );
+
+    return response.data;
   }
-  return response.data;
+};
+
+const logout = () => {
+  localStorage.removeItem('support-desk-app-user');
+
+  return 'Logged out successfully';
 };
 
 const authService = {
   register,
+  logout,
 };
 
 export default authService;

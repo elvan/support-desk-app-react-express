@@ -38,7 +38,7 @@ const Login = () => {
     <>
       <section className='heading'>
         <h1>
-          <FaSignInAlt /> Register
+          <FaSignInAlt /> Login
         </h1>
         <p>Please login with your email and password.</p>
       </section>
