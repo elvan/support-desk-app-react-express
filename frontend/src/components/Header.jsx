@@ -2,19 +2,20 @@ import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { logout } from '../features/auth/authSlice';
+import { logout, reset } from '../features/auth/authSlice';
 
 const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user, message, isLoading, isSuccess, isError } = useSelector(
+  const { user } = useSelector(
     // @ts-ignore
     (state) => state.auth
   );
 
   const onLogout = () => {
     dispatch(logout());
+    dispatch(reset());
     toast.success('Logged out successfully');
     navigate('/');
   };

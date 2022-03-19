@@ -3,7 +3,8 @@ import { FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { register } from '../features/auth/authSlice';
+import Spinner from '../components/Spinner';
+import { register, reset } from '../features/auth/authSlice';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -43,7 +44,6 @@ const Register = () => {
       };
       // @ts-ignore
       dispatch(register(userData));
-      toast.success('Registered successfully');
     }
   };
 
@@ -54,13 +54,18 @@ const Register = () => {
 
     if (isSuccess || user) {
       navigate('/');
+      toast.success('Registered successfully');
     }
 
-    return () => {};
+    dispatch(reset());
   }, [isError, isSuccess, user, message, navigate]);
 
-  if (isSuccess || user) {
+  if (user) {
     navigate('/');
+  }
+
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
