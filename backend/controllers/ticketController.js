@@ -1,7 +1,6 @@
 const asyncHandler = require('express-async-handler');
 
 const Ticket = require('../models/ticket');
-const User = require('../models/user');
 
 exports.listTickets = asyncHandler(async (req, res) => {
   // @ts-ignore
@@ -47,6 +46,11 @@ exports.getTicket = asyncHandler(async (req, res) => {
   if (ticket.user.toString() !== user._id.toString()) {
     res.status(401);
     throw new Error('You are not authorized to view this ticket');
+  }
+
+  if (ticket.status === 'new') {
+    ticket.status = 'open';
+    await ticket.save();
   }
 
   res.json({
@@ -112,20 +116,9 @@ exports.updateTicket = asyncHandler(async (req, res) => {
     throw new Error('You are not authorized to update this ticket');
   }
 
-  const { product, title, description } = req.body;
-
-  if (!product || !title || !description) {
-    res.status(400);
-    throw new Error('Missing required fields');
-  }
-
   const updatedTicket = await Ticket.findByIdAndUpdate(
     req.params.id,
-    {
-      product,
-      title,
-      description,
-    },
+    req.body,
     {
       new: true,
     }
@@ -172,5 +165,85 @@ exports.deleteTicket = asyncHandler(async (req, res) => {
 
   res.json({
     message: 'Ticket deleted successfully',
+  });
+});
+
+exports.closeTicket = asyncHandler(async (req, res) => {
+  // @ts-ignore
+  const user = req.user;
+
+  if (!user) {
+    res.status(401);
+    throw new Error('Unauthorized');
+  }
+
+  const ticket = await Ticket.findById(req.params.id);
+
+  if (!ticket) {
+    res.status(404);
+    throw new Error('Ticket not found');
+  }
+
+  if (ticket.user.toString() !== user._id.toString()) {
+    res.status(401);
+    throw new Error('You are not authorized to update this ticket');
+  }
+
+  const updatedTicket = await Ticket.findByIdAndUpdate(
+    req.params.id,
+    { status: 'closed' },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedTicket) {
+    res.status(500);
+    throw new Error('Error closing ticket');
+  }
+
+  res.json({
+    message: 'Ticket closed successfully',
+    ticket: updatedTicket,
+  });
+});
+
+exports.reopenTicket = asyncHandler(async (req, res) => {
+  // @ts-ignore
+  const user = req.user;
+
+  if (!user) {
+    res.status(401);
+    throw new Error('Unauthorized');
+  }
+
+  const ticket = await Ticket.findById(req.params.id);
+
+  if (!ticket) {
+    res.status(404);
+    throw new Error('Ticket not found');
+  }
+
+  if (ticket.user.toString() !== user._id.toString()) {
+    res.status(401);
+    throw new Error('You are not authorized to update this ticket');
+  }
+
+  const updatedTicket = await Ticket.findByIdAndUpdate(
+    req.params.id,
+    { status: 'open' },
+    {
+      new: true,
+    }
+  );
+
+  if (!updatedTicket) {
+    res.status(500);
+    throw new Error('Error re-openning ticket');
+  }
+
+  res.json({
+    message: 'Ticket re-opened successfully',
+    ticket: updatedTicket,
   });
 });

@@ -38,10 +38,48 @@ const create = async (ticketData, token) => {
   return response.data;
 };
 
+const close = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.put(
+    API_URL + `/${id}/close`,
+    {
+      status: 'closed',
+    },
+    config
+  );
+
+  return response.data;
+};
+
+const reopen = async (id, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.put(
+    API_URL + `/${id}/reopen`,
+    {
+      status: 'open',
+    },
+    config
+  );
+
+  return response.data;
+};
+
 const ticketService = {
   list,
   get,
   create,
+  close,
+  reopen,
 };
 
 export default ticketService;

@@ -25,7 +25,7 @@ const TicketAdd = () => {
     event.preventDefault();
 
     // @ts-ignore
-    dispatch(createTicket({ product, description }));
+    dispatch(createTicket({ product, title, description }));
   };
 
   useEffect(() => {

@@ -1,10 +1,14 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import BackButton from '../components/BackButton';
 import Spinner from '../components/Spinner';
-import { getTicket } from '../features/tickets/ticketSlice';
+import {
+  closeTicket,
+  getTicket,
+  reopenTicket,
+} from '../features/tickets/ticketSlice';
 
 const TicketDetail = () => {
   const { ticket, message, isLoading, isError } = useSelector(
@@ -14,6 +18,21 @@ const TicketDetail = () => {
 
   const { ticketId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onTicketClose = () => {
+    // @ts-ignore
+    dispatch(closeTicket(ticketId));
+    toast.success('Ticket closed');
+    navigate('/tickets');
+  };
+
+  const onTicketReopen = () => {
+    // @ts-ignore
+    dispatch(reopenTicket(ticketId));
+    toast.success('Ticket re-opened');
+    navigate('/tickets');
+  };
 
   useEffect(() => {
     if (isError && message) {
@@ -42,6 +61,8 @@ const TicketDetail = () => {
 
         <h3>Ticket ID: {ticket._id}</h3>
 
+        <h3>Product: {ticket.product}</h3>
+
         <h4>
           Date Submitted: {new Date(ticket.createdAt).toLocaleString('en-US')}
         </h4>
@@ -53,6 +74,18 @@ const TicketDetail = () => {
           {ticket.description}
         </div>
       </header>
+
+      {ticket.status !== 'closed' && (
+        <button className='btn btn-block btn-danger' onClick={onTicketClose}>
+          Close Ticket
+        </button>
+      )}
+
+      {ticket.status === 'closed' && (
+        <button className='btn btn-block' onClick={onTicketReopen}>
+          Re-open Ticket
+        </button>
+      )}
     </div>
   );
 };
