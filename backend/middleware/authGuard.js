@@ -1,4 +1,3 @@
-const bcrypt = require('bcryptjs');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
@@ -20,9 +19,7 @@ const authGuard = asyncHandler(async (req, res, next) => {
       token = req.headers.authorization.split(' ')[1];
       const decoded = jwt.verify(token, JWT_SECRET);
 
-      const user = await User.findById(decoded.id).select('-password');
-
-      req.user = user;
+      req.user = await User.findById(decoded.id).select('-password');
 
       next();
     } catch (error) {

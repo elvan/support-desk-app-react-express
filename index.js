@@ -3,6 +3,7 @@ const express = require('express');
 
 const connectToDatabase = require('./backend/database/connect');
 const errorHandler = require('./backend/middleware/errorHandler');
+const ticketRouter = require('./backend/routers/ticketRouter');
 const userRouter = require('./backend/routers/userRouter');
 
 dotenv.config();
@@ -17,6 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use('/api/tickets', ticketRouter);
 app.use('/api/users', userRouter);
 
 app.get('/', (req, res) => {
