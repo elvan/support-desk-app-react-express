@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { register } from '../features/auth/authSlice';
+import { register, resetAuth } from '../features/auth/authSlice';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +16,7 @@ const Register = () => {
   const { name, email, password, password2 } = formData;
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { user, message, isLoading, isSuccess, isError } = useSelector(
     // @ts-ignore
@@ -41,9 +43,23 @@ const Register = () => {
       };
       // @ts-ignore
       dispatch(register(userData));
-      toast.success('Registered successfully');
     }
   };
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+
+    if (isSuccess || user) {
+      toast.success('Registered successfully');
+      navigate('/');
+    }
+
+    dispatch(resetAuth());
+
+    return () => {};
+  }, [isError, isSuccess, user, message, navigate, dispatch]);
 
   return (
     <>
@@ -66,6 +82,7 @@ const Register = () => {
               required
               value={name}
               onChange={onChange}
+              disabled={isLoading}
             />
           </div>
 
@@ -79,6 +96,7 @@ const Register = () => {
               required
               value={email}
               onChange={onChange}
+              disabled={isLoading}
             />
           </div>
 
@@ -92,6 +110,7 @@ const Register = () => {
               required
               value={password}
               onChange={onChange}
+              disabled={isLoading}
             />
           </div>
 
@@ -105,11 +124,16 @@ const Register = () => {
               required
               value={password2}
               onChange={onChange}
+              disabled={isLoading}
             />
           </div>
 
           <div className='form-group'>
-            <button type='submit' className='btn btn-block'>
+            <button
+              type='submit'
+              className='btn btn-block'
+              disabled={isLoading}
+            >
               Register
             </button>
           </div>
