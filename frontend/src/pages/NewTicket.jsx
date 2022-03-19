@@ -1,20 +1,50 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import BackButton from '../components/BackButton';
+import { createTicket, reset } from '../features/tickets/ticketSlice';
 
 const NewTicket = () => {
   // @ts-ignore
   const { user } = useSelector((state) => state.auth);
+
+  const { isLoading, isSuccess, isError, message } = useSelector(
+    // @ts-ignore
+    (state) => state.ticket
+  );
+
   const [product, setProduct] = useState('');
   const [description, setDescription] = useState('');
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = (event) => {
     event.preventDefault();
 
-    console.log(product, description);
+    // @ts-ignore
+    dispatch(createTicket({ product, description }));
   };
+
+  useEffect(() => {
+    if (isError && message) {
+      toast.error(message);
+    }
+
+    if (isSuccess) {
+      toast.success('Ticket created successfully');
+      dispatch(reset());
+      navigate('/tickets');
+    }
+
+    dispatch(reset());
+  }, [isSuccess, isError, message, dispatch, navigate]);
 
   return (
     <>
+      <BackButton url='/tickets' />
+
       <section className='heading'>
         <h1>Create New Ticket</h1>
         <p>Please fill out the form below</p>
@@ -36,8 +66,9 @@ const NewTicket = () => {
             <label htmlFor='product'>Product</label>
             <select
               id='product'
-              value={product}
               name='product'
+              value={product}
+              disabled={isLoading}
               onChange={(event) => setProduct(event.target.value)}
             >
               <option value=''>Select Product</option>
@@ -56,12 +87,17 @@ const NewTicket = () => {
               id='description'
               name='description'
               value={description}
+              disabled={isLoading}
               onChange={(event) => setDescription(event.target.value)}
             />
           </div>
 
           <div className='form-group'>
-            <button type='submit' className='btn btn-block'>
+            <button
+              type='submit'
+              className='btn btn-block'
+              disabled={isLoading}
+            >
               Submit
             </button>
           </div>
