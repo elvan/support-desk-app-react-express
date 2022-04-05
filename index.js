@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 const express = require('express');
+const cors = require('cors');
 
 const connectToDatabase = require('./backend/database/connect');
 const errorHandler = require('./backend/middleware/errorHandler');
@@ -17,6 +18,8 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cors());
 
 app.use('/api/tickets', ticketRouter);
 app.use('/api/users', userRouter);

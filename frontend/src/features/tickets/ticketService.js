@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = '/api/tickets';
+const API_URL =
+  process.env.REACT_APP_BACKEND_API || 'http://localhost:5000/api';
 
 const list = async (token) => {
   const config = {
@@ -9,7 +10,7 @@ const list = async (token) => {
     },
   };
 
-  const response = await axios.get(API_URL, config);
+  const response = await axios.get(API_URL + '/tickets', config);
 
   return response.data;
 };
@@ -21,7 +22,7 @@ const get = async (id, token) => {
     },
   };
 
-  const response = await axios.get(API_URL + `/${id}`, config);
+  const response = await axios.get(API_URL + `/tickets/${id}`, config);
 
   return response.data;
 };
@@ -33,7 +34,7 @@ const create = async (ticketData, token) => {
     },
   };
 
-  const response = await axios.post(API_URL, ticketData, config);
+  const response = await axios.post(API_URL + '/tickets', ticketData, config);
 
   return response.data;
 };
@@ -46,7 +47,7 @@ const close = async (id, token) => {
   };
 
   const response = await axios.put(
-    API_URL + `/${id}/close`,
+    API_URL + `/tickets/${id}/close`,
     {
       status: 'closed',
     },
@@ -64,7 +65,7 @@ const reopen = async (id, token) => {
   };
 
   const response = await axios.put(
-    API_URL + `/${id}/reopen`,
+    API_URL + `/tickets/${id}/reopen`,
     {
       status: 'open',
     },
